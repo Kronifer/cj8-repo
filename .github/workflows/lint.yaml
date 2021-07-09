@@ -51,6 +51,7 @@ jobs:
         run: |
           pip install poetry
           poetry install
+          poetry shell
           pre-commit run --all-files
         env:
           # Force pre-commit to do a system install.
