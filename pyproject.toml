@@ -18,6 +18,10 @@ flake8-annotations = "^2.0"
 flake8-bandit = "^2.1"
 flake8-docstrings = "^1.5"
 flake8-isort = "^4.0"
+taskipy = "^1.8.1"
+
+[tool.taskipy.tasks]
+lint = "pre-commit run --all-files"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
