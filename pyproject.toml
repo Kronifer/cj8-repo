@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "cj8-repo"
+name = "cj8-submission"
 version = "0.1.0"
-description = ""
-authors = ["Your Name <you@example.com>"]
+description = "Our team's submission for Python Discord's summer code jam of 2021."
+authors = ["Transcendant Tarsiers"]
 license = "MIT"
 
 [tool.poetry.dependencies]
