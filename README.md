@@ -12,7 +12,7 @@ We decided on making a game. This game is platformer-styled. Each level is insid
 
 # Contributing
 
-We use Poetry to manage our dependancies, among other things. To install it, run `pip install poetry`. 
+We use Poetry to manage our dependancies, among other things. To install it, run `pip install poetry`.
 In your cloned repository, after you've installed poetry, run the following commands:
 ```sh
 poetry install
