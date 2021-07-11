@@ -41,9 +41,11 @@ LAVA = (252, 144, 3)
 WATER = (0, 0, 255)
 
 types = ['GRASS', 'LAVA', 'WATER']
+colorTypes = [GRASS, LAVA, WATER]
 
 # Set default type
 select = 'GRASS'
+colorSelect = GRASS
 
 # Create the window
 screen = pygame.display.set_mode([LevelWidth * 20, (LevelHeight * 20) + 20])
@@ -61,6 +63,7 @@ def drawsq(color, pos):
 
 
 grid = [['' for i in range(LevelWidth)] for j in range(LevelHeight)]
+colorGrid = [['' for i in range(LevelWidth)] for j in range(LevelHeight)]
 
 running = True
 while running:
@@ -73,11 +76,13 @@ while running:
             # Place or remove tiles on the map
             if 0 < mouse[0] < LevelWidth * 20 and 20 < mouse[1] < (LevelHeight * 20) and event.button in [1, 3]:
                 grid[mouse[1] // 20][mouse[0] // 20] = select if event.button == 1 else 'AIR'
+                colorGrid[mouse[1] // 20][mouse[0] // 20] = colorSelect if event.button == 1 else AIR
             # Tile selection menu
             if 0 < mouse[0] < LevelWidth * 20 and 0 < mouse[1] < 20 and event.button == 1:
                 xUnit = mouse[0] // 20
                 try:
                     select = types[xUnit]
+                    colorSelect = colorTypes[xUnit]
                 except IndexError:
                     pass
             # Export button
@@ -89,11 +94,11 @@ while running:
     for y in range(len(grid)):
         for x in range(len(grid[y])):
             if not grid[y][x] == '':
-                drawsq(eval(grid[y][x]), (x * 20, y * 20))
+                drawsq(colorGrid[y][x], (x * 20, y * 20))
 
     # Draw the tile selection bar
     for i in range(len(types)):
-        drawsq(eval(types[i]), (i * 20, 0))
+        drawsq(colorTypes[i], (i * 20, 0))
 
     # Draw the yellow export button
     drawsq((252, 231, 3), ((LevelWidth - 1) * 20, 0))
