@@ -9,3 +9,16 @@
 
 ## Our Project
 We decided on making a game. This game is platformer-styled. Each level is inside a box.
+
+# Contributing
+
+We use Poetry to manage our dependancies, among other things. To install it, run `pip install poetry`. 
+In your cloned repository, after you've installed poetry, run the following commands:
+```sh
+poetry install
+poetry run pre-commit install
+```
+This will install our dependancies, and a tool called pre-commit. It will block you from committing if your
+lint fails. It is required that you install it. If you want to check your lint at any time, simply run `poetry run task lint` and poetry will lint for you.
+If your lint fails in any pull request or commit, that pull request will not be merged, and if the commit is to main, it will be reverted, so be careful.
+Also, please understand that committing to main is strongly discouraged, and that you should branch and PR instead.
