@@ -1,6 +1,7 @@
-import pygame
 import pickle
 import tkinter as tk
+
+import pygame
 
 LevelWidth, LevelHeight = 0, 0
 
@@ -22,7 +23,8 @@ canvas1.create_window(100, 45, window=label2)
 canvas1.create_window(115, 45, window=entry2)
 
 
-def setsize():
+def setsize() -> None:
+    """Sets the size of the window."""
     global LevelWidth, LevelHeight
     LevelWidth = int(entry1.get())
     LevelHeight = int(entry2.get())
@@ -52,13 +54,14 @@ screen = pygame.display.set_mode([LevelWidth * 20, (LevelHeight * 20) + 20])
 pygame.display.set_caption('Level Creator')
 
 
-def savelevel(data, savename):
-    file = open(savename, 'wb')
-    pickle.dump(data, file)
-    file.close()
+def savelevel(data: any, savename: str) -> None:
+    """Saves the created level to the supplied filename."""
+    with open(savename, 'wb') as file:
+        pickle.dump(data, file)
 
 
-def drawsq(color, pos):
+def drawsq(color: str, pos: tuple) -> None:
+    """Draws a square in the given position with the specified color."""
     pygame.draw.rect(screen, color, pygame.Rect(pos[0], pos[1], 20, 20))
 
 
