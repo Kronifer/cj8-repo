@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #
 # Name: main.py
 # Purpose: Runs the main engine of the game
@@ -54,3 +55,19 @@ def main() -> None:
 if __name__ == "__main__":
 
     main()
+=======
+import typing as t
+
+import blessed as b
+
+term = b.Terminal()
+TERM_HEIGHT = term.height
+TERM_WIDTH = term.width
+term = term
+
+
+def assert_(testCond: t.bool) -> None:
+    """Custom asset function."""
+    if not testCond:
+        raise AssertionError
+>>>>>>> 563231c (Fixed lint and moved .py files to src directory)
