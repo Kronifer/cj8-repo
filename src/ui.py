@@ -27,7 +27,7 @@ class Panel:
     def render(self, rendered_already: t.List[t.List[bool]], sc: env.Screen) -> int:
         """Push the Panel's data to the appropriate location on a screen."""
         num_cells_rendered = 0
-        or_x, or_y = self.origin
+        or_y, or_x = self.origin
 
         for i, j in enumerate(self.data):
             for k, m in enumerate(j):
