@@ -2,12 +2,9 @@
 
 import typing as t
 
-import main
+import env
 import space
-
-# TODO this is repeated in window.py for circular import reasons---pull out to common loc
-# types
-Screen = t.List[t.List[str]]
+import util
 
 
 class Panel:
@@ -19,15 +16,15 @@ class Panel:
     """
 
     def __init__(self, origin: space.Point, bottom: space.Point, data: t.List[t.List[str]]):
-        main.assert_(bottom >= origin)
-        main.assert_(len(data) == bottom.y - origin.y + 1)
-        main.assert_(len(data[0]) == bottom.x - origin.x + 1)
+        util.assert_(bottom >= origin)
+        util.assert_(len(data) == bottom.y - origin.y + 1)
+        util.assert_(len(data[0]) == bottom.x - origin.x + 1)
         # we assume all the rows are of the same length
         self.origin = origin
         self.bottom = bottom
         self.data = data
 
-    def render(self, rendered_already: t.List[t.List[bool]], sc: Screen) -> int:
+    def render(self, rendered_already: t.List[t.List[bool]], sc: env.Screen) -> int:
         """Push the Panel's data to the appropriate location on a screen."""
         num_cells_rendered = 0
         or_x, or_y = self.origin
@@ -43,7 +40,7 @@ class Panel:
         return num_cells_rendered
 
 
-def render_cell_to_screen(cell_str: str, p: space.Point, sc: Screen) -> None:
+def render_cell_to_screen(cell_str: str, p: space.Point, sc: env.Screen) -> None:
     """Push a cell's glyph to a screen."""
     y, x = p
     sc[y][x] = cell_str

@@ -6,7 +6,7 @@ for inspection.
 
 import unittest
 
-import main
+import env
 import space
 import ui
 import window
@@ -17,11 +17,11 @@ class TestDisplay(unittest.TestCase):
 
     def test_display(self) -> None:
         """Main function to test the display."""
-        if main.term.height < 24 or main.term.width < 80:
+        if env.term.height < 24 or env.term.width < 80:
             print("Terminal must be at least 80x24, aborting.")
             quit()
-        main.term.clear()
-        with main.term.fullscreen(), main.term.cbreak(), main.term.hidden_cursor():
+        env.term.clear()
+        with env.term.fullscreen(), env.term.cbreak(), env.term.hidden_cursor():
 
             root_data = [["[red]0[/red]"] * 80 for _ in range(24)]
             child_data = [["[blue]1[/blue]"] * 11 for _ in range(5)]
@@ -38,6 +38,6 @@ class TestDisplay(unittest.TestCase):
             root_data[0][0] = "[blue]0[/blue]"
             window.render()
             input()
-            root_data[0] = ["[blue]0[/blue]"] * main.term.width
+            root_data[0] = ["[blue]0[/blue]"] * env.term.width
             window.render()
             input()

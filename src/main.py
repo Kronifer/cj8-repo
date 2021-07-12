@@ -7,23 +7,11 @@
 
 import time
 
-import blessed as b
+import env
 
 # constants
 FRAMES_PER_SECOND = 60
 SECONDS_PER_FRAME = FRAMES_PER_SECOND ** -1
-
-# globals
-term: b.Terminal = b.Terminal()
-term_height: int = term.height
-term_width: int = term.width
-
-
-# utility functions
-def assert_(testCond: bool) -> None:
-    """Custom asset function."""
-    if not testCond:
-        raise AssertionError
 
 
 def main() -> None:
@@ -32,10 +20,10 @@ def main() -> None:
     :return: None
     """
     # Setup
-    if term.height < 24 or term.width < 80:
+    if env.term.height < 24 or env.term.width < 80:
         print("Terminal must be at least 80x24, aborting.")
         quit()
-    term.clear()
+    env.term.clear()
 
     # Main Game loop conditionals
     game_over = False
@@ -43,7 +31,7 @@ def main() -> None:
     counter = 1200
 
     # Main Game Loop
-    with term.fullscreen(), term.cbreak(), term.hidden_cursor():
+    with env.term.fullscreen(), env.term.cbreak(), env.term.hidden_cursor():
         while not game_over:
 
             # Getting start time of execution
