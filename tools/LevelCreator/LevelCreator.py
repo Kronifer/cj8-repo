@@ -78,7 +78,7 @@ while running:
             mouse = event.pos
             # Place or remove tiles on the map
             if 0 < mouse[0] < LevelWidth * 20 and 20 < mouse[1] < (LevelHeight * 20) and event.button in [1, 3]:
-                grid[mouse[1] // 20][mouse[0] // 20] = select if event.button == 1 else 'AIR'
+                grid[mouse[1] // 20][mouse[0] // 20] = select if event.button == 1 else ''
                 colorGrid[mouse[1] // 20][mouse[0] // 20] = colorSelect if event.button == 1 else AIR
             # Tile selection menu
             if 0 < mouse[0] < LevelWidth * 20 and 0 < mouse[1] < 20 and event.button == 1:
