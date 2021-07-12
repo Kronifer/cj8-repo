@@ -1,6 +1,6 @@
 # Name: main.py
 # Purpose: Runs the main engine of the game
-# Authors: @giode#1018 and @Kronifer#5647
+# Authors: @grivera64 and @Kronifer
 # Date: July 2021
 #
 
