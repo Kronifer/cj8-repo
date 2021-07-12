@@ -1,9 +1,9 @@
 """Test display code.
 
-Run this manually since this needs visual inspection and uses input() to halt
-for inspection.
+Run this manually since this needs visual inspection.
 """
 
+import time
 import unittest
 
 import env
@@ -32,12 +32,12 @@ class TestDisplay(unittest.TestCase):
 
             window.panel_stack = [root_panel, child_panel]
             window.render()
-            input()
+            time.sleep(1)
             window.render()
-            input()
+            time.sleep(1)
             root_data[0][0] = "[blue]0[/blue]"
             window.render()
-            input()
+            time.sleep(1)
             root_data[0] = ["[blue]0[/blue]"] * env.term.width
             window.render()
-            input()
+            time.sleep(1)
