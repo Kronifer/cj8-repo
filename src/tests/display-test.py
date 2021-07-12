@@ -28,7 +28,7 @@ class TestDisplay(unittest.TestCase):
 
             root_panel: ui.Panel = ui.Panel(space.Point(0, 0), space.Point(23, 79), root_data)
             child_panel: ui.Panel = ui.Panel(space.Point(10, 5), space.Point(14, 15),
-                                             child_data)
+                                             child_data, border_style="green", border=True)
 
             window.panel_stack = [root_panel, child_panel]
             window.render()
