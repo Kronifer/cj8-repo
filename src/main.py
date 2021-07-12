@@ -14,9 +14,9 @@ FRAMES_PER_SECOND = 60
 SECONDS_PER_FRAME = FRAMES_PER_SECOND ** -1
 
 # globals
-term: b.Terminal
-term_height: int
-term_width: int
+term: b.Terminal = b.Terminal()
+term_height: int = term.height
+term_width: int = term.width
 
 
 # utility functions
@@ -32,18 +32,9 @@ def main() -> None:
     :return: None
     """
     # Setup
-    global term
-    global term_height
-    global term_width
-
-    term = b.Terminal()
-    term_height = term.height
-    term_width = term.width
-
     if term.height < 24 or term.width < 80:
         print("Terminal must be at least 80x24, aborting.")
         quit()
-
     term.clear()
 
     # Main Game loop conditionals

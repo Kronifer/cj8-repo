@@ -1,3 +1,9 @@
+"""Test display code.
+
+Run this manually since this needs visual inspection and uses input() to halt
+for inspection.
+"""
+
 import unittest
 
 import main
@@ -5,20 +11,16 @@ import space
 import ui
 import window
 
-if __name__ == '__main__':
-
-    if main.term.height < 24 or main.term.width < 80:
-        print("Terminal must be at least 80x24, aborting.")
-        quit()
-
-    main.term.clear()
-
 
 class TestDisplay(unittest.TestCase):
     """Test the display."""
 
-    def testFn(self) -> None:
+    def test_display(self) -> None:
         """Main function to test the display."""
+        if main.term.height < 24 or main.term.width < 80:
+            print("Terminal must be at least 80x24, aborting.")
+            quit()
+        main.term.clear()
         with main.term.fullscreen(), main.term.cbreak(), main.term.hidden_cursor():
 
             root_data = [["[red]0[/red]"] * 80 for _ in range(24)]
