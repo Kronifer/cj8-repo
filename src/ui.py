@@ -27,7 +27,7 @@ class Panel:
         self.bottom = bottom
         self.data = data
 
-    def render(self, rendered_already: t.List[bool], sc: Screen) -> int:
+    def render(self, rendered_already: t.List[t.List[bool]], sc: Screen) -> int:
         """Push the Panel's data to the appropriate location on a screen."""
         num_cells_rendered = 0
         or_x, or_y = self.origin
