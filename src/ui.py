@@ -15,8 +15,8 @@ class Panel:
     rich.print.
     """
 
-    def __init__(self, origin: space.Point, bottom: space.Point, data:
-                 t.List[t.List[str]], border: bool = False, border_style: str = "normal"):
+    def __init__(self, origin: space.Point, bottom: space.Point, data: t.List[t.List[str]],
+                 border: bool = False, border_style: str = "normal"):
         util.assert_(bottom >= origin)
         self.height: int = bottom.y - origin.y + 1
         self.width: int = bottom.x - origin.x + 1
