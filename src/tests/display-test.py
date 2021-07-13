@@ -10,9 +10,9 @@ import time
 import typing as t
 import unittest
 
+import display
 import env
 import space
-import ui
 import util
 import window
 
@@ -30,22 +30,22 @@ class TestDisplay(unittest.TestCase):
             return super(TestDisplay, self).run(result)
 
     def test_display(self) -> None:
-        """Test basic Panel and Window features."""
+        """Test basic Display and Window features."""
         root_data = [["[red]0[/red]"] * 80 for _ in range(24)]
         child_data = [["[blue]1[/blue]"] * 11 for _ in range(5)]
 
-        root_panel: ui.Panel = ui.Panel(space.Point(0, 0), space.Point(23, 79), root_data)
-        child_panel: ui.Panel = ui.Panel(space.Point(10, 5), space.Point(14, 15),
-                                         child_data, border_style="green", border=True)
+        root_window: window.Window = window.Window(space.Point(0, 0), space.Point(23, 79), root_data)
+        child_window: window.Window = window.Window(space.Point(10, 5), space.Point(14, 15),
+                                                    child_data, border_style="green", border=True)
 
-        window.panel_stack = [root_panel, child_panel]
-        window.render()
+        display.win_stack = [root_window, child_window]
+        display.render()
         time.sleep(2)
         root_data[0][0] = "[blue]0[/blue]"
-        window.render()
+        display.render()
         time.sleep(2)
         root_data[0] = ["[blue]0[/blue]"] * env.term.width
-        window.render()
+        display.render()
         time.sleep(2)
 
     def test_level_display(self) -> None:
@@ -73,34 +73,34 @@ class TestDisplay(unittest.TestCase):
         root_data = util.convert_data(data)
         rock_data = util.convert_data(rock_data)
 
-        root_panel: ui.Panel = ui.Panel(space.Point(0, 0), space.Point(len(root_data) - 1,
-                                        len(root_data[0]) - 1), root_data)
-        rock_panel: ui.Panel = ui.Panel(space.Point(0, len(root_data[0]) + 4),
-                                        space.Point(len(rock_data) - 1,
-                                        len(root_data[0]) + 4 + len(rock_data[0]) - 1),
-                                        rock_data)
+        root_window: window.Window = window.Window(space.Point(0, 0), space.Point(len(root_data) - 1,
+                                                                                  len(root_data[0]) - 1), root_data)
+        rock_window: window.Window = window.Window(space.Point(0, len(root_data[0]) + 4),
+                                                   space.Point(len(rock_data) - 1,
+                                                               len(root_data[0]) + 4 + len(rock_data[0]) - 1),
+                                                   rock_data)
 
-        window.panel_stack = [root_panel, rock_panel]
-        window.render()
+        display.win_stack = [root_window, rock_window]
+        display.render()
         time.sleep(2)
 
-    def test_menus(self) -> None:
-        """Test menus."""
-        menu: ui.Menu = ui.Menu([ui.MenuEntry("foo"),
-                                 ui.MenuEntry("bar"),
-                                 ui.MenuEntry("baz"),
-                                 ui.MenuEntry("quuuuuuuux")],
-                                center_entries=True)
-        menu_panel = menu.make_panel()
-        window.panel_stack = [menu_panel]
-        window.render()
+    def test_text_widgets(self) -> None:
+        """Test text widgets."""
+        text_w: window.TextWidget = window.TextWidget([window.TextWidgetEntry("foo"),
+                                                       window.TextWidgetEntry("bar"),
+                                                       window.TextWidgetEntry("baz"),
+                                                       window.TextWidgetEntry("quuuuuuuux")],
+                                                      center_entries=True)
+        text_w_window = text_w.make_window()
+        display.win_stack = [text_w_window]
+        display.render()
         time.sleep(2)
         root_data = [["[red]0[/red]"] * 80 for _ in range(24)]
-        root_panel: ui.Panel = ui.Panel(space.Point(0, 0), space.Point(len(root_data) - 1,
-                                        len(root_data[0]) - 1), root_data)
-        menu.maximize = True
-        menu.center_entries = False
-        menu_panel = menu.make_panel()
-        window.panel_stack = [root_panel, menu_panel]
-        window.render()
+        root_window: window.Window = window.Window(space.Point(0, 0), space.Point(len(root_data) - 1,
+                                                                                  len(root_data[0]) - 1), root_data)
+        text_w.maximize = False
+        text_w.center_entries = False
+        text_w_window = text_w.make_window()
+        display.win_stack = [root_window, text_w_window]
+        display.render()
         time.sleep(2)

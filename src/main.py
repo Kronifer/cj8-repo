@@ -10,8 +10,8 @@ import typing as t
 
 import blessed as b
 
+import display
 import env
-import window
 
 # constants
 FRAMES_PER_SECOND = 60
@@ -20,7 +20,7 @@ SECONDS_PER_FRAME = FRAMES_PER_SECOND ** -1
 key_to_action: dict[str, t.Callable] = {"KEY_LEFT": env.you.move_left,
                                         "KEY_RIGHT": env.you.move_right,
                                         "KEY_SPACE": env.you.jump,
-                                        "KEY_ESCAPE": window.show_main_menu}
+                                        "KEY_ESCAPE": display.show_main_menu}
 
 
 def update_world() -> None:
@@ -51,14 +51,14 @@ def main() -> None:
             start_time = time.time()
 
             # Render the world/the main menu/whatever
-            window.display()
+            display.display()
 
             # Get and process input
             inp: b.keyboard.Keystroke = env.term.inkey(timeout=0)  # timeout=0 doesn't block
             inp_s = str(inp)
 
             if env.paused:  # the "simulation" should not tick
-                window.process_input(inp_s)
+                display.process_input(inp_s)
 
             # Player acts and world updates
             else:
