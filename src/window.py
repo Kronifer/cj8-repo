@@ -26,3 +26,31 @@ def print_screen(screen_to_render: env.Screen) -> None:
     """Print a screen on terminal."""
     with env.term.location(0, 0):
         rich.print("\n".join(["".join(i) for i in screen_to_render]))
+
+
+def show_main_menu() -> None:
+    """Pause game when the player hits Esc at game world."""
+    env.paused = True
+
+
+main_menu: ui.Menu = ui.Menu([ui.MenuEntry("Play", "bold blue"),
+                              ui.MenuEntry("Save Game", "bold blue"),
+                              ui.MenuEntry("Load Game", "bold blue"),
+                              ui.MenuEntry("Options", "bold blue"),
+                              ui.MenuEntry("See highscores", "bold blue"),
+                              ui.MenuEntry("Quit", "bold blue")],
+                             center_entries=True)
+
+main_menu_panel = main_menu.make_panel()
+
+
+def process_input(keypress: str) -> None:
+    """Receive input to pass to a menu or interface object."""
+    pass
+
+
+def display() -> None:
+    """Entry point into displaying on the terminal screen."""
+    global panel_stack
+    panel_stack = [main_menu_panel]
+    render()
