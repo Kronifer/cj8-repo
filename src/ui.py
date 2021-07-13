@@ -35,7 +35,6 @@ class Menu:
     """
 
     def __init__(self, entries: t.List[MenuEntry], maximize: bool = True, center_entries: bool = False):
-
         self.entries = entries
         self.maximize = maximize
         self.center_entries = center_entries
@@ -100,6 +99,10 @@ class Panel:
         # note that the border may obscure data at the edges of the region
         self.border = border
         self.border_style = border_style
+
+    def __str__(self):
+        """Print panel info for debugging purposes."""
+        return(f"Panel. Or: {self.origin} Bot: {self.bottom} Data: {len(self.data)} by {len(self.data[0])} matrix")
 
     def render(self, rendered_already: t.List[t.List[bool]], sc: env.Screen) -> int:
         """Push the Panel's data to the appropriate location on a screen."""
