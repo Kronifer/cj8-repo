@@ -10,9 +10,18 @@ import ui
 panel_stack: t.List[ui.Panel] = []
 
 
+def clear_screen(sc: env.Screen) -> None:
+    """Necessary to avoid artifacts in places without any panel."""
+    for i, row in enumerate(sc):
+        for j, col in enumerate(row):
+            sc[i][j] = ""
+
+
 def render() -> None:
     """Composite live panels to a screen."""
     screen_to_render: env.Screen = [[" "] * env.term_width for _ in range(env.term_height)]
+
+    clear_screen(screen_to_render)
     num_of_cells_to_render: int = env.term_height * env.term_width
     rendered: t.List[t.List[bool]] = [[False] * env.term_width for _ in range(env.term_height)]
     for p in reversed(panel_stack):
