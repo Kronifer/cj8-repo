@@ -98,7 +98,7 @@ class TestDisplay(unittest.TestCase):
         root_data = [["[red]0[/red]"] * 80 for _ in range(24)]
         root_panel: ui.Panel = ui.Panel(space.Point(0, 0), space.Point(len(root_data) - 1,
                                         len(root_data[0]) - 1), root_data)
-        menu.maximize = False
+        menu.maximize = True
         menu.center_entries = False
         menu_panel = menu.make_panel()
         window.panel_stack = [root_panel, menu_panel]
