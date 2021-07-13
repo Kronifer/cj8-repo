@@ -34,7 +34,7 @@ class Menu:
     Each entry must also fit on one line.
     """
 
-    def __init__(self, entries: t.List[MenuEntry], maximize: bool = True, center_entries: bool = False):
+    def __init__(self, entries: t.List[MenuEntry], maximize: bool = False, center_entries: bool = False):
         self.entries = entries
         self.maximize = maximize
         self.center_entries = center_entries
