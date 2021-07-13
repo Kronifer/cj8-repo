@@ -48,7 +48,7 @@ class TestDisplay(unittest.TestCase):
         display.render()
         time.sleep(2)
 
-    def test_level_display(self) -> None:
+    def test_converter(self) -> None:
         """Test for displaying level saves."""
         with open('tests/save.level', 'rb') as f:
             data = pickle.load(f)  # noqa: S301
