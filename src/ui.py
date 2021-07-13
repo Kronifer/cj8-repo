@@ -35,7 +35,6 @@ class Menu:
     """
 
     def __init__(self, entries: t.List[MenuEntry], maximize: bool = True, center_entries: bool = False):
-
         self.entries = entries
         self.maximize = maximize
         self.center_entries = center_entries
