@@ -99,6 +99,8 @@ class TextWidget:
                     self.entries[self.active_index].selected = True  # Select new entry
                     break
         else:  # Direction is upwards
+            if self.active_index == 0:  # Stops if selected entry is first entry.
+                return                  # Otherwise, it would go to last entry.
             for entry in self.entries[self.active_index-1::-1]:
                 if entry.selectable:
                     self.entries[self.active_index].selected = False

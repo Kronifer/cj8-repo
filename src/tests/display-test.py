@@ -131,7 +131,7 @@ class TestDisplay(unittest.TestCase):
         selected_entry = text_w.entries[text_w.active_index]
 
         data: str = [f"The last selected entry was '{selected_entry.text}'. You escaped the test using '{inp.name}'.",
-                     "The callback's return was \"{selected_entry.on_select_fn()}\""]
+                     f"The callback's return was \"{selected_entry.on_select_fn()}\""]
         text_w: window.TextWidget = window.TextWidget([window.TextWidgetEntry(data[0], selectable=False),
                                                        window.TextWidgetEntry(data[1], selectable=False)],
                                                       center_entries=True)
