@@ -63,3 +63,19 @@ class Player:
         else:
             self.world[worldindex][index] = "AIR"
             self.world[worldindex - 1][index] = "PLAYER"
+
+    def move_down(self) -> None:
+        """Moves the player down a cell if no solid cell is under the player."""
+        for element in self.world:
+            worldindex = self.world.index(element)
+            try:
+                index = element.index("PLAYER")
+            except ValueError:
+                pass
+            if "index" in locals():
+                break
+        if self.world[worldindex + 1][index] in SOLIDS:
+            pass
+        else:
+            self.world[worldindex][index] = "AIR"
+            self.world[worldindex + 1][index] = "PLAYER"
