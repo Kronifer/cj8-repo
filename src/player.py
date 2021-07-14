@@ -48,7 +48,6 @@ class Player:
             self.world[worldindex][index - 1] = "PLAYER"
 
     def jump(self) -> None:
-        # TODO: Implement gravity in jump
         """Make the player begin a jump if in position to jump."""
         for element in self.world:
             worldindex = self.world.index(element)
