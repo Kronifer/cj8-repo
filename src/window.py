@@ -80,6 +80,8 @@ class TextWidget:
                                      for _ in range(self.widget_height + 2)]
         pt: space.Point = space.Point(or_y + 1, or_x + 1)
         for i, e in enumerate(self.entries):
+            # assert out if a small but legal terminal width would cause an index error
+            util.assert_(len(e) <= self.widget_width)
             txt: str = str(e)
             if self.center_entries:
                 txt = txt.center(self.widget_width)
