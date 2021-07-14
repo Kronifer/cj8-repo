@@ -11,11 +11,14 @@ dismissing submenus.
 
 """
 
+import pickle
 import typing as t
 
 import rich
 
 import env
+import space
+import util
 import window
 
 win_stack: t.List[window.Window] = []
@@ -50,7 +53,7 @@ main_menu: window.TextWidget = window.TextWidget([window.TextWidgetEntry("Play",
                                                   window.TextWidgetEntry("Options", "bold blue"),
                                                   window.TextWidgetEntry("See highscores", "bold blue"),
                                                   window.TextWidgetEntry("Quit", "bold blue")],
-                                                 center_entries=True)
+                                                 maximize=False, center_entries=True)
 
 
 def process_input(keypress: str) -> None:
@@ -60,13 +63,26 @@ def process_input(keypress: str) -> None:
     if keypress == "KEY_DOWN":
         main_menu.select(1)
     if keypress == "KEY_ENTER":
-        if main_menu.entries[main_menu.active_index].text == "Quit":
+        active_entry = main_menu.entries[main_menu.active_index]
+        if active_entry.text == "Quit":
             quit()
+        if active_entry.text == "Play":
+            env.paused = False
 
 
 def display() -> None:
     """Entry point into displaying on the terminal screen."""
     global win_stack
-    main_menu_window = main_menu.make_window()
-    win_stack = [main_menu_window]
+    if env.paused:  # Menu displayer
+        main_menu_window = main_menu.make_window()
+        win_stack = [main_menu_window]
+    else:  # Game displayer
+        with open('tests/save.level', 'rb') as f:      # FILLER DATA
+            level_data = pickle.load(f)  # noqa: S301
+        root_window = window.Window(
+            space.Point(0, 0),
+            space.Point(len(level_data)-1, len(level_data[0])-1),
+            util.convert_data(level_data)
+        )
+        win_stack = [root_window]
     render()
