@@ -44,7 +44,7 @@ def show_main_menu() -> None:
     env.paused = True
 
 
-main_menu: window.TextWidget = window.TextWidget([window.TextWidgetEntry("Play", "bold blue"),
+main_menu: window.TextWidget = window.TextWidget([window.TextWidgetEntry("Play", "bold blue", selected=True),
                                                   window.TextWidgetEntry("Save Game", "bold blue"),
                                                   window.TextWidgetEntry("Load Game", "bold blue"),
                                                   window.TextWidgetEntry("Options", "bold blue"),
@@ -52,16 +52,21 @@ main_menu: window.TextWidget = window.TextWidget([window.TextWidgetEntry("Play",
                                                   window.TextWidgetEntry("Quit", "bold blue")],
                                                  center_entries=True)
 
-main_menu_window = main_menu.make_window()
-
 
 def process_input(keypress: str) -> None:
     """Receive input to pass to a menu or interface object."""
-    pass
+    if keypress == "KEY_UP":
+        main_menu.select(-1)
+    if keypress == "KEY_DOWN":
+        main_menu.select(1)
+    if keypress == "KEY_ENTER":
+        if main_menu.entries[main_menu.active_index].text == "Quit":
+            quit()
 
 
 def display() -> None:
     """Entry point into displaying on the terminal screen."""
     global win_stack
+    main_menu_window = main_menu.make_window()
     win_stack = [main_menu_window]
     render()

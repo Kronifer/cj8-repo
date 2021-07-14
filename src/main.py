@@ -42,6 +42,7 @@ def main() -> None:
     # Main Game loop conditionals
     game_over = False
     start_time, end_time = 0.0, 0.0
+    env.paused = True  # Show menu first
 
     # Main Game Loop
     with env.term.fullscreen(), env.term.cbreak(), env.term.hidden_cursor():
@@ -55,7 +56,7 @@ def main() -> None:
 
             # Get and process input
             inp: b.keyboard.Keystroke = env.term.inkey(timeout=0)  # timeout=0 doesn't block
-            inp_s = str(inp)
+            inp_s = inp.name
 
             if env.paused:  # the "simulation" should not tick
                 display.process_input(inp_s)
