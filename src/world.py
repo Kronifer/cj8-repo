@@ -3,7 +3,7 @@
 # Author: @grivera64
 # Date: July 2021
 
-from env import SOLIDS
+SOLIDS: list = ["GRASS", "FLOOR", "SPIKE_UP", "SPIKE_DOWN", "STONE"]
 
 
 def apply_gravity(world: list[list[str]]) -> None:

@@ -1,6 +1,6 @@
 """Player class."""
 
-from env import SOLIDS
+SOLIDS: list = ["GRASS", "FLOOR", "SPIKE_UP", "SPIKE_DOWN", "STONE"]
 
 
 class Player:

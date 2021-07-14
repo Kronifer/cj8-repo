@@ -13,11 +13,9 @@ term: blessed.Terminal = blessed.Terminal()
 term_height: int = term.height - 2
 term_width: int = term.width
 
-SOLIDS: list = ["GRASS", "FLOOR", "SPIKE_UP", "SPIKE_DOWN", "STONE"]
-
 paused: bool = False
 
-you: player.Player = player.Player()
+you: player.Player = player.Player(world=["placeholder", "world"])
 
 # TYPES
 
