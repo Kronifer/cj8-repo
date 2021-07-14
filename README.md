@@ -21,3 +21,6 @@ poetry run pre-commit install
 This will install our dependancies, and a tool called pre-commit. It will block you from committing if your
 lint fails. It is required that you install it. If you want to check your lint at any time, simply run `poetry run task lint` and poetry will lint for you.
 If your lint fails in any pull request or commit, that pull request will not be merged, and if the commit is to main, it will be reverted, so be careful.
+
+## Level Creator
+The Level Creator file in the tools folder is for _development_ purposes only. It is not used as part of the TUI. It is a visual for the levels that could be added into the game.
