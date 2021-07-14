@@ -1,5 +1,7 @@
 """Player class."""
 
+from env import SOLIDS
+
 
 class Player:
     """This is the player's ingame object.
@@ -10,17 +12,54 @@ class Player:
     into a module as singleton.
     """
 
-    def __init__(self):
-        pass
+    def __init__(self, world: list):
+        self.world = world
 
     def move_left(self) -> None:
         """Move the player one cell left."""
-        pass
+        for element in self.world:
+            worldindex = self.world.index(element)
+            try:
+                index = element.index("PLAYER")
+            except ValueError:
+                pass
+            if "index" in locals():
+                break
+        if self.world[worldindex][index - 1] in SOLIDS:
+            pass
+        else:
+            self.world[worldindex][index] = "AIR"
+            self.world[worldindex][index - 1] = "PLAYER"
 
     def move_right(self) -> None:
         """Move the player one cell right."""
-        pass
+        for element in self.world:
+            worldindex = self.world.index(element)
+            try:
+                index = element.index("PLAYER")
+            except ValueError:
+                pass
+            if "index" in locals():
+                break
+        if self.world[worldindex][index - 1] in SOLIDS:
+            pass
+        else:
+            self.world[worldindex][index] = "AIR"
+            self.world[worldindex][index - 1] = "PLAYER"
 
     def jump(self) -> None:
+        # TODO: Implement gravity in jump
         """Make the player begin a jump if in position to jump."""
-        pass
+        for element in self.world:
+            worldindex = self.world.index(element)
+            try:
+                index = element.index("PLAYER")
+            except ValueError:
+                pass
+            if "index" in locals():
+                break
+        if self.world[worldindex + 1][index] not in SOLIDS or self.world[worldindex - 1][index] in SOLIDS:
+            pass
+        else:
+            self.world[worldindex][index] = "AIR"
+            self.world[worldindex - 1][index] = "PLAYER"

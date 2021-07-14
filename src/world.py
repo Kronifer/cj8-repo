@@ -3,7 +3,7 @@
 # Author: @grivera64
 # Date: July 2021
 
-SOLIDS = ["FLOOR"]
+from env import SOLIDS
 
 
 def apply_gravity(world: list[list[str]]) -> None:
