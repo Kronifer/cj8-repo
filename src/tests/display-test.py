@@ -104,3 +104,37 @@ class TestDisplay(unittest.TestCase):
         display.win_stack = [root_window, text_w_window]
         display.render()
         time.sleep(2)
+
+    def test_menu(self) -> None:
+        """Test the menu and keypresses."""
+        baz_callback: t.Callable = lambda: "baz's callback"
+        bar_callback: t.Callable = lambda: "bar's awesome callback"
+        text_w: window.TextWidget = window.TextWidget([window.TextWidgetEntry("foo", selected=True),
+                                                       window.TextWidgetEntry("bar", on_select_fn=bar_callback),
+                                                       window.TextWidgetEntry("baz", on_select_fn=baz_callback),
+                                                       window.TextWidgetEntry("quuuuuuuux")],
+                                                      center_entries=True)
+
+        while True:
+            text_w_window = text_w.make_window()
+            display.win_stack = [text_w_window]
+            display.render()
+
+            inp = env.term.inkey()
+            if inp.name == "KEY_DOWN":
+                text_w.select(1)
+            if inp.name == "KEY_UP":
+                text_w.select(-1)
+            if inp.name in ("KEY_ESCAPE", "KEY_ENTER"):
+                break
+
+        selected_entry = text_w.entries[text_w.active_index]
+
+        data: str = [f"The last selected entry was '{selected_entry.text}'. You escaped the test using '{inp.name}'.",
+                     "The callback's return was \"{selected_entry.on_select_fn()}\""]
+        text_w: window.TextWidget = window.TextWidget([window.TextWidgetEntry(data[0], selectable=False),
+                                                       window.TextWidgetEntry(data[1], selectable=False)],
+                                                      center_entries=True)
+        display.win_stack = [text_w.make_window()]
+        display.render()
+        time.sleep(4)

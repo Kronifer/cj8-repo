@@ -7,18 +7,25 @@ import typing as t
 import env
 import space
 import util
+from exceptions import TooManySelected
 
 
 class TextWidgetEntry:
     """Selectable entries to be plugged into a TextWidget object."""
 
-    def __init__(self, text: str, style: str = "normal", selectable: bool =
-                 True, on_select_fn: t.Callable = lambda: None):
+    def __init__(self, text: str, style: str = "normal", *, selectable: bool =
+                 True, selected: bool = False, on_select_fn: t.Callable = lambda: None):
         self.text: str = text
         self.style: str = style
+        self.selectable: bool = selectable
+        self.selected: bool = selected and selectable
+        self.on_select_fn: bool = on_select_fn
 
     def __len__(self):
         return len(self.text)
+
+    def __str__(self):
+        return ["", "> "][self.selected and self.selectable] + self.text
 
 
 class TextWidget:
@@ -38,6 +45,13 @@ class TextWidget:
         self.entries = entries
         self.maximize = maximize
         self.center_entries = center_entries
+        ind = None
+        for entry in self.entries:
+            if ind is not None and entry.selected:  # Confirm is only one entry was made "selected"
+                raise TooManySelected
+            if entry.selected:
+                ind = self.entries.index(entry)
+        self.active_index = ind
 
     def make_window(self) -> Window:
         """Makes widget content into a Window."""
@@ -47,7 +61,7 @@ class TextWidget:
         max_width: int = env.term_width - 8
         max_height: int = env.term_height - 8
 
-        self.entry_lens: t.List[int] = [len(e) for e in self.entries]
+        self.entry_lens: t.List[int] = [len(str(e)) for e in self.entries]
 
         self.widget_width: int = min(max(self.entry_lens), max_width)
         self.widget_height: int = len(self.entries)
@@ -66,7 +80,7 @@ class TextWidget:
                                      for _ in range(self.widget_height + 2)]
         pt: space.Point = space.Point(or_y + 1, or_x + 1)
         for i, e in enumerate(self.entries):
-            txt: str = e.text
+            txt: str = str(e)
             if self.center_entries:
                 txt = txt.center(self.widget_width)
             txt_as_l: t.List[str] = [f"[{e.style}]{t}[/{e.style}]" for t in txt]
@@ -74,6 +88,25 @@ class TextWidget:
                 data[i + 1][j + 1] = let
             pt = space.Point(pt.y + 1, pt.x)
         return Window(space.Point(or_y, or_x), space.Point(bot_y, bot_x), data, True)
+
+    def select(self, dir: int) -> None:
+        """Selects another entry based on "direction"."""
+        if dir == 1:  # Direction is downwards
+            for entry in self.entries[self.active_index+1:]:
+                if entry.selectable:  # If not selectable, look to go down further.
+                    self.entries[self.active_index].selected = False  # Deselect previous entry
+                    self.active_index = self.entries.index(entry)
+                    self.entries[self.active_index].selected = True  # Select new entry
+                    break
+        else:  # Direction is upwards
+            for entry in self.entries[self.active_index-1::-1]:
+                if entry.selectable:
+                    self.entries[self.active_index].selected = False
+                    self.active_index = self.entries.index(entry)
+                    self.entries[self.active_index].selected = True
+                    break
+
+        # Note: Nothing would happen if all of the entries were not selectable
 
 
 class Window:
