@@ -90,7 +90,10 @@ def display(world: list) -> None or list:
     global win_stack
     if env.paused:  # Menu displayer
         main_menu_window = main_menu.make_window()
-        win_stack.append(main_menu_window)
+        logo = [list(line) for line in env.logo.split("\n")[1:-1]]
+        logo_origin = space.Point(25, int(main_menu_window.origin.x-3*len(logo[0])/10))  # Centers the logo.
+        logo_window = window.Window.from_origin(logo_origin, logo)
+        win_stack = [main_menu_window, logo_window]
     else:  # Game displayer
         root_window = window.Window.from_origin(space.Point(0, 0), util.convert_data(world))
         win_stack = [root_window]
