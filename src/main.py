@@ -38,7 +38,6 @@ def main() -> None:
     inp_s = ""
 
     # Main Game loop conditionals
-    game_over = False
     global is_jumping
     start_time, end_time = 0.0, 0.0
     env.paused = True  # Show menu first
@@ -49,7 +48,7 @@ def main() -> None:
 
     # Main Game Loop
     with env.term.fullscreen(), env.term.cbreak(), env.term.hidden_cursor():
-        while not game_over:
+        while not env.game_over:
             keypress_copy = inp_s
 
             # Getting start time of execution
@@ -65,7 +64,7 @@ def main() -> None:
                                                     "KEY_ESCAPE": display.show_main_menu}
 
             # Get and process input
-            inp: b.keyboard.Keystroke = env.term.inkey(timeout=0.15)
+            inp: b.keyboard.Keystroke = env.term.inkey(timeout=0)
             inp_s = inp.name
             if inp_s is None:
                 for element in world:

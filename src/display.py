@@ -21,6 +21,7 @@ import util
 import window
 
 win_stack: t.List[window.Window] = []
+input_sink_stack: t.List[t.Any] = []  # TODO? more correct to have List[OverarchingWidgetClass] here
 
 
 def render() -> None:
@@ -46,27 +47,39 @@ def show_main_menu() -> None:
     env.paused = True
 
 
-main_menu: window.TextWidget = window.TextWidget([window.TextWidgetEntry("Play", "bold blue", selected=True),
-                                                  window.TextWidgetEntry("Save Game", "bold blue"),
-                                                  window.TextWidgetEntry("Load Game", "bold blue"),
-                                                  window.TextWidgetEntry("Options", "bold blue"),
-                                                  window.TextWidgetEntry("See highscores", "bold blue"),
-                                                  window.TextWidgetEntry("Quit", "bold blue")],
-                                                 maximize=False, center_entries=True)
+def unpause() -> None:
+    """Toggle unpausing of game."""
+    env.paused = False
+
+
+def end_game() -> None:
+    """Stop main game loop."""
+    env.game_over = True
+
+
+main_menu: window.Menu = window.Menu([window.MenuEntry("Play", "bold blue",
+                                      True, unpause),
+                                      window.MenuEntry("Save Game", "bold blue"),
+                                      window.MenuEntry("Load Game", "bold blue"),
+                                      window.MenuEntry("Options", "bold blue"),
+                                      window.MenuEntry("See highscores", "bold blue"),
+                                      window.MenuEntry("Quit", "bold blue",
+                                                       True, end_game)],
+                                     maximize=False, center_entries=True)
 
 
 def process_input(keypress: str) -> None:
-    """Receive input to pass to a menu or interface object."""
-    if keypress == "KEY_UP":
-        main_menu.select(-1)
-    if keypress == "KEY_DOWN":
-        main_menu.select(1)
-    if keypress == "KEY_ENTER":
-        active_entry = main_menu.entries[main_menu.active_index]
-        if active_entry.text == "Quit":
-            quit()
-        if active_entry.text == "Play":
-            env.paused = False
+    """Receive input to pass to a menu or interface object.
+
+    TODO: this needs to do the part that's not just passing input on, too!
+    """
+    util.assert_(len(input_sink_stack) > 0)
+    if keypress == "KEY_ESCAPE":
+        input_sink_stack.pop()
+        if len(input_sink_stack) == 0:
+            unpause
+    else:
+        input_sink_stack[-1].process_input(keypress)
 
 
 def display(world: list) -> None or list:
@@ -74,7 +87,8 @@ def display(world: list) -> None or list:
     global win_stack
     if env.paused:  # Menu displayer
         main_menu_window = main_menu.make_window()
-        win_stack = [main_menu_window]
+        input_sink_stack.append(main_menu)
+        win_stack.append(main_menu_window)
     else:  # Game displayer
         root_window = window.Window(
             space.Point(0, 0),

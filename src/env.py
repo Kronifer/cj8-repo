@@ -12,6 +12,7 @@ term_height: int = term.height - 2
 term_width: int = term.width
 
 paused: bool = False
+game_over: bool = False
 
 logo: str = """
 ██████╗  █████╗  ██████╗██╗  ██╗███████╗██████╗

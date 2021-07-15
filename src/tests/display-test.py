@@ -109,34 +109,35 @@ class TestDisplay(unittest.TestCase):
         """Test the menu and keypresses."""
         baz_callback: t.Callable = lambda: "baz's callback"
         bar_callback: t.Callable = lambda: "bar's awesome callback"
-        text_w: window.TextWidget = window.TextWidget([window.TextWidgetEntry("foo", selected=True),
-                                                       window.TextWidgetEntry("bar", on_select_fn=bar_callback),
-                                                       window.TextWidgetEntry("baz", on_select_fn=baz_callback),
-                                                       window.TextWidgetEntry("quuuuuuuux")],
-                                                      center_entries=True)
+        menu_active: bool = True
 
-        while True:
+        def exit_menu() -> None:
+            nonlocal menu_active
+            menu_active = False
+
+        text_w: window.Menu = window.Menu([window.MenuEntry("foo"),
+                                           window.MenuEntry("bar", on_select_fn=bar_callback),
+                                           window.MenuEntry("baz", on_select_fn=baz_callback),
+                                           window.MenuEntry("quuuuuux"),
+                                           window.MenuEntry("exit", on_select_fn=exit_menu)],
+                                          center_entries=True)
+
+        while menu_active:
             text_w_window = text_w.make_window()
             display.win_stack = [text_w_window]
             display.render()
-
             inp = env.term.inkey()
-            if inp.name == "KEY_DOWN":
-                text_w.select(1)
-            if inp.name == "KEY_UP":
-                text_w.select(-1)
-            if inp.name in ("KEY_ESCAPE", "KEY_ENTER"):
-                break
+            text_w.process_input(inp.name)
 
-        selected_entry = text_w.entries[text_w.active_index]
+        selected_entry = text_w.entries[text_w.selected_entry_idx]
 
         data: str = [f"Last selected entry: '{selected_entry.text}'.",
                      f"You escaped the test using '{inp.name}'.",
                      f"The callback's return was \"{selected_entry.on_select_fn()}\""]
 
-        text_w: window.TextWidget = window.TextWidget([window.TextWidgetEntry(data[0], selectable=False),
-                                                       window.TextWidgetEntry(data[1], selectable=False),
-                                                       window.TextWidgetEntry(data[2], selectable=False)],
+        text_w: window.TextWidget = window.TextWidget([window.TextWidgetEntry(data[0]),
+                                                       window.TextWidgetEntry(data[1]),
+                                                       window.TextWidgetEntry(data[2])],
                                                       center_entries=True)
         display.win_stack = [text_w.make_window()]
         display.render()

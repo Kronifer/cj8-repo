@@ -7,25 +7,30 @@ import typing as t
 import env
 import space
 import util
-from exceptions import TooManySelected
 
 
 class TextWidgetEntry:
-    """Selectable entries to be plugged into a TextWidget object."""
+    """Text entries to be plugged into a TextWidget object."""
 
-    def __init__(self, text: str, style: str = "normal", *, selectable: bool =
-                 True, selected: bool = False, on_select_fn: t.Callable = lambda: None):
+    def __init__(self, text: str, style: str = "normal"):
         self.text: str = text
         self.style: str = style
-        self.selectable: bool = selectable
-        self.selected: bool = selected and selectable
-        self.on_select_fn: bool = on_select_fn
 
     def __len__(self):
         return len(self.text)
 
     def __str__(self):
-        return ["", "> "][self.selected and self.selectable] + self.text
+        return self.text
+
+
+class MenuEntry(TextWidgetEntry):
+    """Selectable text entries to be plugged into a Menu object."""
+
+    def __init__(self, text: str, style: str = "normal", selectable: bool =
+                 True, on_select_fn: t.Callable = lambda: None):
+        self.selectable = selectable
+        self.on_select_fn = on_select_fn
+        TextWidgetEntry.__init__(self, text, style)
 
 
 class TextWidget:
@@ -45,72 +50,95 @@ class TextWidget:
         self.entries = entries
         self.maximize = maximize
         self.center_entries = center_entries
-        ind = None
-        for entry in self.entries:
-            if ind is not None and entry.selected:  # Confirm is only one entry was made "selected"
-                raise TooManySelected
-            if entry.selected:
-                ind = self.entries.index(entry)
-        self.active_index = ind
+
+    def get_text_as_list(self, i: int, e: TextWidgetEntry, txt: str, style: str, centered: bool) -> t.List[str]:
+        """Actually construct the entry text as a row of cells.
+
+        Pulled out so Menu can override and print selected entries differently.
+        """
+        # assert out if a small but legal terminal width would cause an index
+        # error when we try to write the list into data
+        util.assert_(len(e) <= self.data_width)  # NB after "> " might be added
+        if centered:
+            txt = txt.center(self.data_width)
+        return [f"[{e.style}]{t}[/{e.style}]" for t in txt]
 
     def make_window(self) -> Window:
         """Makes widget content into a Window."""
-        # dimensions:
-
         # -8 b/c 2 cells for root and widget borders & 2 for padding on each side
         max_width: int = env.term_width - 8
         max_height: int = env.term_height - 8
 
         self.entry_lens: t.List[int] = [len(str(e)) for e in self.entries]
-
-        self.widget_width: int = min(max(self.entry_lens), max_width)
-        self.widget_height: int = len(self.entries)
+        #  hack: +2 is space for the "> " on selected entries
+        self.data_width: int = min(max(self.entry_lens), max_width) + 2
+        self.data_height: int = len(self.entries)
 
         if self.maximize:
-            self.widget_width = max(self.widget_width, max_width - 12)
-            self.widget_height = max(self.widget_height, max_height - 12)
+            self.data_width = max(self.data_width, max_width - 12)
+            self.data_height = max(self.data_height, max_height - 12)
 
         # Window position
-        or_y: int = ((env.term_height - self.widget_height + 1) // 2) - 1
-        bot_y: int = or_y + self.widget_height + 1
-        or_x: int = ((env.term_width - self.widget_width + 1) // 2) - 1
-        bot_x: int = or_x + self.widget_width + 1
+        self.or_y: int = ((env.term_height - self.data_height + 1) // 2) - 1
+        self.bot_y: int = self.or_y + self.data_height + 1
+        self.or_x: int = ((env.term_width - self.data_width + 1) // 2) - 1
+        self.bot_x: int = self.or_x + self.data_width + 1
 
-        data: t.List[t.List[str]] = [["[normal] [/normal]"] * (self.widget_width + 2)
-                                     for _ in range(self.widget_height + 2)]
-        pt: space.Point = space.Point(or_y + 1, or_x + 1)
+        data: t.List[t.List[str]] = [["[normal] [/normal]"] * (self.data_width + 2)
+                                     for _ in range(self.data_height + 2)]
+        pt: space.Point = space.Point(self.or_y + 1, self.or_x + 1)
         for i, e in enumerate(self.entries):
-            # assert out if a small but legal terminal width would cause an index error
-            util.assert_(len(e) <= self.widget_width)
-            txt: str = str(e)
-            if self.center_entries:
-                txt = txt.center(self.widget_width)
-            txt_as_l: t.List[str] = [f"[{e.style}]{t}[/{e.style}]" for t in txt]
+            txt_as_l = self.get_text_as_list(i, e, e.text, e.style, self.center_entries)
             for j, let in enumerate(txt_as_l):
                 data[i + 1][j + 1] = let
             pt = space.Point(pt.y + 1, pt.x)
-        return Window(space.Point(or_y, or_x), space.Point(bot_y, bot_x), data, True)
+        return Window(space.Point(self.or_y, self.or_x), space.Point(self.bot_y, self.bot_x), data, True)
 
-    def select(self, dir: int) -> None:
-        """Selects another entry based on "direction"."""
-        if dir == 1:  # Direction is downwards
-            for entry in self.entries[self.active_index+1:]:
-                if entry.selectable:  # If not selectable, look to go down further.
-                    self.entries[self.active_index].selected = False  # Deselect previous entry
-                    self.active_index = self.entries.index(entry)
-                    self.entries[self.active_index].selected = True  # Select new entry
-                    break
-        else:  # Direction is upwards
-            if self.active_index == 0:  # Stops if selected entry is first entry.
-                return                  # Otherwise, it would go to last entry.
-            for entry in self.entries[self.active_index-1::-1]:
-                if entry.selectable:
-                    self.entries[self.active_index].selected = False
-                    self.active_index = self.entries.index(entry)
-                    self.entries[self.active_index].selected = True
-                    break
 
-        # Note: Nothing would happen if all of the entries were not selectable
+class Menu(TextWidget):
+    """TextWidget with selectable entries.
+
+    Selection runs an associated function.
+    """
+
+    def __init__(self, entries: t.List[TextWidgetEntry], maximize: bool = True, center_entries: bool = False):
+        TextWidget.__init__(self, entries, maximize, center_entries)
+        self.selected_entry_idx = 0
+
+    def get_text_as_list(self, i: int, e: MenuEntry, txt: str, style: str, centered: bool) -> t.List[str]:
+        """Actually construct the entry text as a row of cells."""
+        # assert out if a small but legal terminal width would cause an index
+        # error when we try to write the list into data
+        if i == self.selected_entry_idx:
+            txt = "> " + txt
+            style = "bold " + style if style == "normal" else "bold"
+        return TextWidget.get_text_as_list(self, i, e, txt, style, centered)
+
+    def process_input(self, cmd_name: str) -> None:
+        """Process menu-specific input.
+
+        TODO: less repetition between KEY_UP and KEY_DOWN
+        """
+        selectable_entries: t.List[t.Tuple[int, MenuEntry]]
+        if cmd_name == "KEY_ENTER" or cmd_name == "KEY_SPACE":
+            self.entries[self.selected_entry_idx].on_select_fn()
+        elif cmd_name == "KEY_DOWN":
+            selectable_es = filter(lambda t: t[1].selectable,
+                                   list(enumerate(self.entries))[self.selected_entry_idx:])
+            next(selectable_es)  # consume the current entry
+            try:
+                self.selected_entry_idx = next(selectable_es)[0]
+            except StopIteration:
+                pass  # do nothing if already on last selectable entry
+        elif cmd_name == "KEY_UP":
+            selectable_es = filter(lambda t: t[1].selectable,
+                                   reversed(list(enumerate(self.entries))[:self.selected_entry_idx]))
+            try:
+                self.selected_entry_idx = next(selectable_es)[0]
+            except StopIteration:
+                pass
+
+        #  ignore other inputs. Display handles Esc
 
 
 class Window:
