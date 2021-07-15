@@ -2,6 +2,8 @@
 
 import typing as t
 
+import env
+
 KEY = {
     '': ' ',
     'AIR': ' ',
@@ -19,6 +21,12 @@ def assert_(testCond: bool) -> None:
     """Custom asset function."""
     if not testCond:
         raise AssertionError
+
+
+def dprint(to_print: str) -> None:
+    """For debugging."""
+    with env.term.location(80, 0):
+        print(to_print)
 
 
 def convert_data(data: t.List[t.List[str]]) -> t.List[t.List[str]]:
