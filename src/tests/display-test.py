@@ -73,12 +73,8 @@ class TestDisplay(unittest.TestCase):
         root_data = util.convert_data(data)
         rock_data = util.convert_data(rock_data)
 
-        root_window: window.Window = window.Window(space.Point(0, 0), space.Point(len(root_data) - 1,
-                                                                                  len(root_data[0]) - 1), root_data)
-        rock_window: window.Window = window.Window(space.Point(0, len(root_data[0]) + 4),
-                                                   space.Point(len(rock_data) - 1,
-                                                               len(root_data[0]) + 4 + len(rock_data[0]) - 1),
-                                                   rock_data)
+        root_window: window.Window = window.Window.from_origin(space.Point(0, 0), root_data)
+        rock_window: window.Window = window.Window.from_origin(space.Point(0, len(root_data[0]) + 4), rock_data)
 
         display.win_stack = [root_window, rock_window]
         display.render()
@@ -96,8 +92,7 @@ class TestDisplay(unittest.TestCase):
         display.render()
         time.sleep(2)
         root_data = [["[red]0[/red]"] * 80 for _ in range(24)]
-        root_window: window.Window = window.Window(space.Point(0, 0), space.Point(len(root_data) - 1,
-                                                                                  len(root_data[0]) - 1), root_data)
+        root_window: window.Window = window.Window.from_origin(space.Point(0, 0), root_data)
         text_w.maximize = False
         text_w.center_entries = False
         text_w_window = text_w.make_window()

@@ -220,6 +220,13 @@ class Window:
 
         return num_cells_rendered
 
+    @classmethod
+    def from_origin(cls, origin: space.Point, data: t.List[t.List[str]],
+                    border: bool = False, border_style: str = "normal") -> Window:
+        """Creates a Window class with data and origin point. Does bottom point's calculations for you."""
+        bottom: space.Point = space.Point(origin.y + len(data)-1, origin.x + len(data[0])-1)
+        return cls(origin, bottom, data, border, border_style)
+
 
 def render_cell_to_screen(cell_str: str, p: space.Point, sc: env.Screen) -> None:
     """Push a cell's glyph to a screen."""

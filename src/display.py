@@ -92,11 +92,7 @@ def display(world: list) -> None or list:
         main_menu_window = main_menu.make_window()
         win_stack.append(main_menu_window)
     else:  # Game displayer
-        root_window = window.Window(
-            space.Point(0, 0),
-            space.Point(len(world)-1, len(world[0])-1),
-            util.convert_data(world)
-        )
+        root_window = window.Window.from_origin(space.Point(0, 0), util.convert_data(world))
         win_stack = [root_window]
     render()
     return world if 'world' in locals() else None
