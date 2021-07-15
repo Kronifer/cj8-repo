@@ -65,7 +65,7 @@ def main() -> None:
                                                     "KEY_ESCAPE": display.show_main_menu}
 
             # Get and process input
-            inp: b.keyboard.Keystroke = env.term.inkey(timeout=0.1)
+            inp: b.keyboard.Keystroke = env.term.inkey(timeout=0.15)
             inp_s = inp.name
             if inp_s is None:
                 for element in world:
