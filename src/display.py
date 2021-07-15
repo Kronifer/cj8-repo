@@ -68,6 +68,9 @@ main_menu: window.Menu = window.Menu([window.MenuEntry("Play", "blue",
                                      maximize=False, center_entries=True)
 
 
+input_sink_stack.append(main_menu)  # start with this open
+
+
 def process_input(keypress: str) -> None:
     """Receive input to pass to a menu or interface object.
 
@@ -77,7 +80,7 @@ def process_input(keypress: str) -> None:
     if keypress == "KEY_ESCAPE":
         input_sink_stack.pop()
         if len(input_sink_stack) == 0:
-            unpause
+            unpause()
     else:
         input_sink_stack[-1].process_input(keypress)
 
@@ -87,7 +90,6 @@ def display(world: list) -> None or list:
     global win_stack
     if env.paused:  # Menu displayer
         main_menu_window = main_menu.make_window()
-        input_sink_stack.append(main_menu)
         win_stack.append(main_menu_window)
     else:  # Game displayer
         root_window = window.Window(
