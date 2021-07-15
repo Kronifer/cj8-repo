@@ -57,13 +57,13 @@ def end_game() -> None:
     env.game_over = True
 
 
-main_menu: window.Menu = window.Menu([window.MenuEntry("Play", "bold blue",
+main_menu: window.Menu = window.Menu([window.MenuEntry("Play", "blue",
                                       True, unpause),
-                                      window.MenuEntry("Save Game", "bold blue"),
-                                      window.MenuEntry("Load Game", "bold blue"),
-                                      window.MenuEntry("Options", "bold blue"),
-                                      window.MenuEntry("See highscores", "bold blue"),
-                                      window.MenuEntry("Quit", "bold blue",
+                                      window.MenuEntry("Save Game", "blue"),
+                                      window.MenuEntry("Load Game", "blue"),
+                                      window.MenuEntry("Options", "blue"),
+                                      window.MenuEntry("See highscores", "blue"),
+                                      window.MenuEntry("Quit", "blue",
                                                        True, end_game)],
                                      maximize=False, center_entries=True)
 

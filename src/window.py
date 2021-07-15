@@ -61,7 +61,7 @@ class TextWidget:
         util.assert_(len(e) <= self.data_width)  # NB after "> " might be added
         if centered:
             txt = txt.center(self.data_width)
-        return [f"[{e.style}]{t}[/{e.style}]" for t in txt]
+        return [f"[{style}]{t}[/{style}]" for t in txt]
 
     def make_window(self) -> Window:
         """Makes widget content into a Window."""
@@ -115,7 +115,7 @@ class Menu(TextWidget):
         # error when we try to write the list into data
         if i == self.selected_entry_idx:
             txt = "> " + txt
-            style = "bold " + style if style == "normal" else "bold"
+            style = "bold" if style == "normal" else "bold " + style  # redundant "bold"s are fine
         return TextWidget.get_text_as_list(self, i, e, txt, style, centered)
 
     def process_input(self, cmd_name: str) -> None:
