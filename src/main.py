@@ -7,6 +7,7 @@
 import pickle
 import time
 import typing as t
+from copy import deepcopy
 
 import blessed as b
 
@@ -87,6 +88,21 @@ def main() -> None:
                     update_world()
                     if keypress_copy == inp_s and inp_s in ['KEY_UP', 'KEY_SPACE']:
                         you.move_down()
+
+            for element in world:
+                worldindex = world.index(element)
+                try:
+                    index = element.index("PLAYER")
+                    break
+                except ValueError:
+                    pass
+            if world[worldindex + 1][index] in ["LAVA", "SPIKE_UP"]:
+                env.hits -= 1
+            if env.hits < env.previoushits:
+                world = deepcopy(backupworld)
+                env.previoushits = env.hits
+            if env.hits == 0:
+                env.game_over = True
 
             # Check to see if the current frame has been shown for enough time to maintain
             # the current amount of frames per second

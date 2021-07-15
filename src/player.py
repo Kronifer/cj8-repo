@@ -1,5 +1,7 @@
 """Player class."""
 
+import env
+
 SOLIDS: list = ["GRASS", "FLOOR", "SPIKE_UP", "SPIKE_DOWN", "STONE"]
 
 
@@ -68,6 +70,8 @@ class Player:
             except ValueError:
                 pass
         if self.world[worldindex + 1][index] in SOLIDS:
+            if self.world[worldindex - 1][index] == "SPIKE_DOWN":
+                env.hits -= 1
             if self.world[worldindex - 1][index] in SOLIDS:
                 pass
             elif worldindex == 0:
