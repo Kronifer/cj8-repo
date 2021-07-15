@@ -20,6 +20,8 @@ FRAMES_PER_SECOND = 60
 SECONDS_PER_FRAME = FRAMES_PER_SECOND ** -1
 is_jumping = False
 
+SOLIDS: list = ["GRASS", "FLOOR", "STONE", "LAVA"]
+
 
 def update_world() -> None:
     """Point of entry for updating the simulation."""
@@ -75,7 +77,10 @@ def main() -> None:
                         break
                     except ValueError:
                         pass
-                if world[worldindex + 1][index] in ["AIR", ""]:
+                if world[worldindex + 1][index] in SOLIDS:
+                    is_jumping = False
+                else:
+                    is_jumping = False
                     you.move_down()
 
             if env.paused:  # the "simulation" should not tick
@@ -87,7 +92,10 @@ def main() -> None:
                 if not env.paused:
                     update_world()
                     if keypress_copy == inp_s and inp_s in ['KEY_UP', 'KEY_SPACE']:
+                        is_jumping = False
                         you.move_down()
+                    if inp_s in ['KEY_UP', 'KEY_SPACE']:
+                        is_jumping = True
 
             for element in world:
                 worldindex = world.index(element)
@@ -97,7 +105,10 @@ def main() -> None:
                 except ValueError:
                     pass
             if world[worldindex + 1][index] in ["LAVA", "SPIKE_UP"]:
-                env.hits -= 1
+                if is_jumping:
+                    pass
+                else:
+                    env.hits -= 1
             if env.hits < env.previoushits:
                 world = deepcopy(backupworld)
                 env.previoushits = env.hits
