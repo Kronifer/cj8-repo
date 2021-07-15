@@ -103,7 +103,11 @@ class Menu(TextWidget):
 
     def __init__(self, entries: t.List[TextWidgetEntry], maximize: bool = True, center_entries: bool = False):
         TextWidget.__init__(self, entries, maximize, center_entries)
-        self.selected_entry_idx = 0
+
+        try:
+            self.selected_entry_idx = next(i for i, v in enumerate(entries) if v.selectable)
+        except StopIteration:
+            raise ValueError  # we need at least one entry you can select
 
     def get_text_as_list(self, i: int, e: MenuEntry, txt: str, style: str, centered: bool) -> t.List[str]:
         """Actually construct the entry text as a row of cells."""
@@ -119,7 +123,6 @@ class Menu(TextWidget):
 
         TODO: less repetition between KEY_UP and KEY_DOWN
         """
-        selectable_entries: t.List[t.Tuple[int, MenuEntry]]
         if cmd_name == "KEY_ENTER" or cmd_name == "KEY_SPACE":
             self.entries[self.selected_entry_idx].on_select_fn()
         elif cmd_name == "KEY_DOWN":
