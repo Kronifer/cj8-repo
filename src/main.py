@@ -85,8 +85,8 @@ def main() -> None:
                     key_to_action[str(inp_s)]()
                 if not env.paused:
                     update_world()
-                if keypress_copy == inp_s and inp_s in ['KEY_UP', 'KEY_SPACE']:
-                    you.move_down()
+                    if keypress_copy == inp_s and inp_s in ['KEY_UP', 'KEY_SPACE']:
+                        you.move_down()
 
             # Check to see if the current frame has been shown for enough time to maintain
             # the current amount of frames per second
