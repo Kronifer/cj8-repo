@@ -41,9 +41,12 @@ AIR = (0, 0, 0)
 GRASS = (100, 200, 40)
 LAVA = (252, 144, 3)
 WATER = (0, 0, 255)
+PLAYER = (100, 100, 100)
+SPIKE_UP = (156, 156, 156)
+SPIKE_DOWN = (51, 51, 51)
 
-types = ['GRASS', 'LAVA', 'WATER']
-colorTypes = [GRASS, LAVA, WATER]
+types = ['GRASS', 'LAVA', 'WATER', 'PLAYER', 'SPIKE_UP', 'SPIKE_DOWN']
+colorTypes = [GRASS, LAVA, WATER, PLAYER, SPIKE_UP, SPIKE_DOWN]
 
 # Set default type
 select = 'GRASS'
@@ -77,7 +80,7 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse = event.pos
             # Place or remove tiles on the map
-            if 0 < mouse[0] < LevelWidth * 20 and 20 < mouse[1] < (LevelHeight * 20) and event.button in [1, 3]:
+            if 0 < mouse[0] < LevelWidth * 20 and 20 < mouse[1] < (LevelHeight * 20) and event.button in [1, 6]:
                 grid[mouse[1] // 20][mouse[0] // 20] = select if event.button == 1 else ''
                 colorGrid[mouse[1] // 20][mouse[0] // 20] = colorSelect if event.button == 1 else AIR
             # Tile selection menu

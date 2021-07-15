@@ -11,7 +11,6 @@ dismissing submenus.
 
 """
 
-import pickle
 import typing as t
 
 import rich
@@ -70,19 +69,18 @@ def process_input(keypress: str) -> None:
             env.paused = False
 
 
-def display() -> None:
+def display(world: list) -> None or list:
     """Entry point into displaying on the terminal screen."""
     global win_stack
     if env.paused:  # Menu displayer
         main_menu_window = main_menu.make_window()
         win_stack = [main_menu_window]
     else:  # Game displayer
-        with open('tests/save.level', 'rb') as f:      # FILLER DATA
-            level_data = pickle.load(f)  # noqa: S301
         root_window = window.Window(
             space.Point(0, 0),
-            space.Point(len(level_data)-1, len(level_data[0])-1),
-            util.convert_data(level_data)
+            space.Point(len(world)-1, len(world[0])-1),
+            util.convert_data(world)
         )
         win_stack = [root_window]
     render()
+    return world if 'world' in locals() else None
