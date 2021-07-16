@@ -23,7 +23,7 @@ levels = env.levels
 world = levels[0]
 backupworld = deepcopy(levels[0])
 
-SOLIDS: list = ["GRASS", "FLOOR", "STONE", "LAVA"]
+SOLIDS: list = ["GRASS", "FLOOR", "ROCK", "LAVA"]
 
 
 def save() -> None:
@@ -38,11 +38,16 @@ def load() -> None:
     global levels
     global world
     global backupworld
-    with open("saves/main.save", "rb") as f:
-        levels = pickle.load(f)
-    world = levels[0]
-    backupworld = deepcopy(levels[0])
-    env.paused = False
+    try:
+        with open("saves/main.save", "rb") as f:
+            levels = pickle.load(f)
+        world = levels[0]
+        backupworld = deepcopy(levels[0])
+        env.paused = False
+    except EOFError:
+        pass
+    except FileNotFoundError:
+        pass
 
 
 def update_world() -> None:

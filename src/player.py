@@ -2,7 +2,7 @@
 
 import env
 
-SOLIDS: list = ["GRASS", "FLOOR", "SPIKE_UP", "SPIKE_DOWN", "STONE", "LAVA"]
+SOLIDS: list = ["GRASS", "FLOOR", "SPIKE_UP", "SPIKE_DOWN", "ROCK", "LAVA"]
 
 
 class Player:

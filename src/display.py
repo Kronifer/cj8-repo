@@ -57,10 +57,38 @@ def end_game() -> None:
     env.game_over = True
 
 
+def controls() -> None:
+    """Shows Controls."""
+    do_display = True
+    controls: window.TextWidget = window.TextWidget(
+        [
+            window.TextWidgetEntry("Controls", "blue"),
+            window.TextWidgetEntry("Left Arrow: Left", "blue"),
+            window.TextWidgetEntry("Right Arrow: Right", "blue"),
+            window.TextWidgetEntry("Save Game: Delete Key", "blue"),
+            window.TextWidgetEntry("Load Save: Backspace", "blue"),
+            window.TextWidgetEntry("Select On Menu: Enter", "blue"),
+            window.TextWidgetEntry("Go To Menu: Escape", "blue")
+        ],
+        center_entries=True,
+        maximize=False
+    )
+    while do_display:
+        controlwindow = controls.make_window()
+        global win_stack
+        win_stack = [controlwindow]
+        render()
+        inp = env.term.inkey(timeout=0)
+        inp_s = inp.name
+        if inp_s == "KEY_ESCAPE":
+            return
+
+
 main_menu: window.Menu = window.Menu([window.MenuEntry("Play", "blue",
                                       True, unpause),
                                       window.MenuEntry("Options", "blue"),
-                                      window.MenuEntry("See highscores", "blue"),
+                                      window.MenuEntry("See Controls", "blue",
+                                      True, controls),
                                       window.MenuEntry("Quit", "blue",
                                                        True, end_game)],
                                      maximize=False, center_entries=True)

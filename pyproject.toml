@@ -23,6 +23,7 @@ pygame = "^2.0.1"
 
 [tool.taskipy.tasks]
 lint = "flake8 ."
+start = "cd src && python main.py"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
