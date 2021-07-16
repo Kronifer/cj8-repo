@@ -8,7 +8,9 @@
  - [ufshaikh](https://github.com/ufshaikh)
 
 ## Our Project
-We decided on making a game. This game is platformer-styled. Each level is inside a box.
+
+We created a game called _Packed_, where each level takes place in a box. You enter another dimension
+each time you reach the end of a level.
 
 # Contributing
 
@@ -23,4 +25,12 @@ lint fails. It is required that you install it. If you want to check your lint a
 If your lint fails in any pull request or commit, that pull request will not be merged, and if the commit is to main, it will be reverted, so be careful.
 
 ## Level Creator
-The Level Creator file in the tools folder is for _development_ purposes only. It is not used as part of the TUI. It is a visual for the levels that could be added into the game.
+
+The Level Creator file in the tools folder is part of the full game, but NOT the TUI. It is used to
+allow users to create custom levels.
+
+# Installing
+
+To install _Packed_, clone the repository and run `poetry install`. The dependancies are now
+installed. To run the game, simply run `poetry run task start` in the project's root directory with
+a maximized or fullscreen terminal that supports color.
