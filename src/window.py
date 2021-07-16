@@ -183,8 +183,11 @@ class Window:
         for i, j in enumerate(self.data):
             for k, m in enumerate(j):
                 pt = space.Point(i + or_y, k + or_x)
-                if rendered_already[pt.y][pt.x]:
-                    continue
+                try:
+                    if rendered_already[pt.y][pt.x]:
+                        continue
+                except IndexError:
+                    raise IndexError('Window size is too small to play this game :(')
                 render_cell_to_screen(m, pt, sc)
                 rendered_already[pt.y][pt.x] = True
                 num_cells_rendered += 1

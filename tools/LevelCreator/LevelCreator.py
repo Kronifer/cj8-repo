@@ -47,8 +47,8 @@ while True:
                     pass
             # Export button
             if (LevelWidth - 1) * 20 < event.pos[0] < LevelWidth * 20 and 0 < event.pos[1] < 20 and event.button == 1:
-                savelevel(grid, 'save.level')
-                print('Saved "save.level"!')
+                savelevel(grid, '00001.level')
+                print('Saved "00001.level"!')
         if event.type == pygame.MOUSEMOTION:
             if 0 < event.pos[0] < LevelWidth * 20 and 0 < event.pos[1] < 20:
                 try:

@@ -50,7 +50,7 @@ class TestDisplay(unittest.TestCase):
 
     def test_converter(self) -> None:
         """Test for displaying level saves."""
-        with open('tests/save.level', 'rb') as f:
+        with open('tests/00001.level', 'rb') as f:
             data = pickle.load(f)  # noqa: S301
 
         rock_data = [
