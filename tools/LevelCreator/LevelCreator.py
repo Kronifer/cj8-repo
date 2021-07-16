@@ -42,11 +42,14 @@ GRASS = (100, 200, 40)
 LAVA = (252, 144, 3)
 WATER = (0, 0, 255)
 PLAYER = (100, 100, 100)
+PLAYER_END = (40, 30, 100)
 SPIKE_UP = (156, 156, 156)
 SPIKE_DOWN = (51, 51, 51)
+ENEMY1 = (200, 0, 0)
+MOV_PLAT = (148, 0, 211)
 
-types = ['GRASS', 'LAVA', 'WATER', 'PLAYER', 'SPIKE_UP', 'SPIKE_DOWN']
-colorTypes = [GRASS, LAVA, WATER, PLAYER, SPIKE_UP, SPIKE_DOWN]
+types = ['GRASS', 'LAVA', 'WATER', 'PLAYER', 'SPIKE_UP', 'SPIKE_DOWN', 'PLAYER_END', 'ENEMY1', 'MOV_PLAT']
+colorTypes = [GRASS, LAVA, WATER, PLAYER, SPIKE_UP, SPIKE_DOWN, PLAYER_END, ENEMY1, MOV_PLAT]
 
 # Set default type
 select = 'GRASS'
@@ -71,36 +74,46 @@ def drawsq(color: str, pos: tuple) -> None:
 grid = [['' for i in range(LevelWidth)] for j in range(LevelHeight)]
 colorGrid = [['' for i in range(LevelWidth)] for j in range(LevelHeight)]
 
-running = True
-while running:
+while True:
     for event in pygame.event.get():
-        # Check to quit
         if event.type == pygame.QUIT:
-            running = False
+            pygame.quit()
+            quit(0)
         if event.type == pygame.MOUSEBUTTONDOWN:
-            mouse = event.pos
             # Place or remove tiles on the map
-            if 0 < mouse[0] < LevelWidth * 20 and 20 < mouse[1] < (LevelHeight * 20) and event.button in [1, 6]:
-                grid[mouse[1] // 20][mouse[0] // 20] = select if event.button == 1 else ''
-                colorGrid[mouse[1] // 20][mouse[0] // 20] = colorSelect if event.button == 1 else AIR
+            if 0 < event.pos[0] < LevelWidth * 20 and 20 < event.pos[1] < ((LevelHeight + 1) * 20):
+                if event.button in [1, 3]:
+                    grid[(event.pos[1] // 20)-1][event.pos[0] // 20] = select if event.button == 1 else ''
+                    colorGrid[(event.pos[1] // 20)-1][event.pos[0] // 20] = colorSelect if event.button == 1 else AIR
             # Tile selection menu
-            if 0 < mouse[0] < LevelWidth * 20 and 0 < mouse[1] < 20 and event.button == 1:
-                xUnit = mouse[0] // 20
+            if 0 < event.pos[0] < LevelWidth * 20 and 0 < event.pos[1] < 20 and event.button == 1:
+                xUnit = event.pos[0] // 20
                 try:
                     select = types[xUnit]
                     colorSelect = colorTypes[xUnit]
                 except IndexError:
                     pass
             # Export button
-            if (LevelWidth - 1) * 20 < mouse[0] < LevelWidth * 20 and 0 < mouse[1] < 20 and event.button == 1:
+            if (LevelWidth - 1) * 20 < event.pos[0] < LevelWidth * 20 and 0 < event.pos[1] < 20 and event.button == 1:
                 savelevel(grid, 'save.level')
                 print('Saved "save.level"!')
+        if event.type == pygame.MOUSEMOTION:
+            if 0 < event.pos[0] < LevelWidth * 20 and 0 < event.pos[1] < 20:
+                try:
+                    pygame.display.set_caption(f'Select tile type: {types[event.pos[0] // 20]}')
+                except IndexError:
+                    if event.pos[0]//20 == LevelWidth-1:
+                        pygame.display.set_caption('Export')
+                    else:
+                        pygame.display.set_caption('Level Creator')
+            else:
+                pygame.display.set_caption('Level Creator')
 
     # Draw the map tiles
     for y in range(len(grid)):
         for x in range(len(grid[y])):
             if not grid[y][x] == '':
-                drawsq(colorGrid[y][x], (x * 20, y * 20))
+                drawsq(colorGrid[y][x], (x * 20, (y + 1) * 20))
 
     # Draw the tile selection bar
     for i in range(len(types)):
@@ -120,5 +133,3 @@ while running:
     # Update screen then wipe the buffer for the next frame
     pygame.display.flip()
     screen.fill((0, 0, 0))
-
-pygame.quit()
