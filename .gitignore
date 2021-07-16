@@ -30,4 +30,4 @@ build/
 # MacOS
 .DS_Store
 
-src/saves/main.save
+src/saves/*.save
