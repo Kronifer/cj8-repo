@@ -19,8 +19,30 @@ import player
 FRAMES_PER_SECOND = 60
 SECONDS_PER_FRAME = FRAMES_PER_SECOND ** -1
 is_jumping = False
+levels = env.levels
+world = levels[0]
+backupworld = deepcopy(levels[0])
 
 SOLIDS: list = ["GRASS", "FLOOR", "STONE", "LAVA"]
+
+
+def save() -> None:
+    """Saves your progress."""
+    global levels
+    with open("saves/main.save", "wb") as f:
+        pickle.dump(levels, f)
+
+
+def load() -> None:
+    """Loads the saved game."""
+    global levels
+    global world
+    global backupworld
+    with open("saves/main.save", "rb") as f:
+        levels = pickle.load(f)
+    world = levels[0]
+    backupworld = deepcopy(levels[0])
+    env.paused = False
 
 
 def update_world() -> None:
@@ -39,21 +61,17 @@ def main() -> None:
         quit()
     env.term.clear()
     inp_s = ""
-
+    global levels
     # Main Game loop conditionals
     global is_jumping
     start_time, end_time = 0.0, 0.0
     env.paused = True  # Show menu first
-    with open('tests/save.level', 'rb') as file:
-        world = pickle.load(file)
-    with open('tests/save.level', 'rb') as file:
-        backupworld = pickle.load(file)
 
     # Main Game Loop
     with env.term.fullscreen(), env.term.cbreak(), env.term.hidden_cursor():
         while not env.game_over:
+            global world, backupworld
             keypress_copy = inp_s
-
             # Getting start time of execution
             start_time = time.time()
 
@@ -64,7 +82,9 @@ def main() -> None:
                                                     "KEY_RIGHT": you.move_right,
                                                     "KEY_UP": you.jump,
                                                     "KEY_SPACE": you.jump,
-                                                    "KEY_ESCAPE": display.show_main_menu}
+                                                    "KEY_ESCAPE": display.show_main_menu,
+                                                    "KEY_DELETE": save,
+                                                    "KEY_BACKSPACE": load}
 
             # Get and process input
             inp: b.keyboard.Keystroke = env.term.inkey(timeout=0.15)
@@ -114,6 +134,12 @@ def main() -> None:
                 env.previoushits = env.hits
             if env.hits == 0:
                 env.game_over = True
+            if backupworld[worldindex][index] == "PLAYER_END":
+                levels.pop(0)
+                if len(levels) == 0:
+                    env.game_over = True
+                world = levels[0]
+                backupworld = deepcopy(levels[0])
 
             # Check to see if the current frame has been shown for enough time to maintain
             # the current amount of frames per second

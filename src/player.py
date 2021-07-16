@@ -28,9 +28,9 @@ class Player:
                 break
             except ValueError:
                 pass
-        if self.world[worldindex][index - 1] in SOLIDS:
+        if index - 1 < 0:
             pass
-        elif index - 1 < 0:
+        elif self.world[worldindex][index - 1] in SOLIDS:
             pass
         else:
             self.world[worldindex][index] = self.checkworld[worldindex][index] if \
@@ -49,8 +49,6 @@ class Player:
         if index + 1 == len(self.world[worldindex]):
             pass
         elif self.world[worldindex][index + 1] in SOLIDS:
-            pass
-        elif (index + 1) >= len(self.world[worldindex]):
             pass
         else:
             self.world[worldindex][index] = self.checkworld[worldindex][index] if \

@@ -12,6 +12,7 @@ KEY = {
     'LAVA': '[red]█[/red]',
     'ROCK': '[grey39]█[/grey39]',
     'PLAYER': '@',
+    'PLAYER_END': '[light blue]☐[/light blue]',
     'SPIKE_UP': 'M',
     'SPIKE_DOWN': 'W'
 }
@@ -31,4 +32,15 @@ def dprint(to_print: str) -> None:
 
 def convert_data(data: t.List[t.List[str]]) -> t.List[t.List[str]]:
     """Converts level creator data."""
-    return [[KEY[col.upper()] for col in row] for row in data]
+    displaydata = []
+    for row in data:
+        subdata = []
+        for col in row:
+            try:
+                if col == "":
+                    col = "AIR"
+                subdata.append(KEY[col.upper()])
+            except KeyError:
+                subdata.append(col.upper())
+        displaydata.append(subdata)
+    return displaydata

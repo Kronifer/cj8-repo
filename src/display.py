@@ -59,8 +59,6 @@ def end_game() -> None:
 
 main_menu: window.Menu = window.Menu([window.MenuEntry("Play", "blue",
                                       True, unpause),
-                                      window.MenuEntry("Save Game", "blue"),
-                                      window.MenuEntry("Load Game", "blue"),
                                       window.MenuEntry("Options", "blue"),
                                       window.MenuEntry("See highscores", "blue"),
                                       window.MenuEntry("Quit", "blue",
