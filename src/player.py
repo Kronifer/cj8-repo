@@ -30,6 +30,9 @@ class Player:
                 pass
         if index - 1 < 0:
             pass
+        elif self.world[worldindex][index - 1] == "LAVA":
+            env.hits -= 1
+            pass
         elif self.world[worldindex][index - 1] in SOLIDS:
             pass
         else:
@@ -47,6 +50,9 @@ class Player:
             except ValueError:
                 pass
         if index + 1 == len(self.world[worldindex]):
+            pass
+        elif self.world[worldindex][index + 1] == "LAVA":
+            env.hits -= 1
             pass
         elif self.world[worldindex][index + 1] in SOLIDS:
             pass

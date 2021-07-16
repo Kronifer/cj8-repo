@@ -124,11 +124,14 @@ def main() -> None:
                     break
                 except ValueError:
                     pass
-            if world[worldindex + 1][index] in ["LAVA", "SPIKE_UP"]:
-                if is_jumping:
-                    pass
-                else:
-                    env.hits -= 1
+            try:
+                if world[worldindex + 1][index] in ["LAVA", "SPIKE_UP"]:
+                    if is_jumping:
+                        pass
+                    else:
+                        env.hits -= 1
+            except IndexError:
+                env.hits -= 1
             if env.hits < env.previoushits:
                 world = deepcopy(backupworld)
                 env.previoushits = env.hits
@@ -136,8 +139,9 @@ def main() -> None:
                 env.game_over = True
             if backupworld[worldindex][index] == "PLAYER_END":
                 levels.pop(0)
-                if len(levels) == 0:
+                if int(len(levels)) == 0:
                     env.game_over = True
+                    break
                 world = levels[0]
                 backupworld = deepcopy(levels[0])
 

@@ -12,7 +12,7 @@ KEY = {
     'LAVA': '[red]█[/red]',
     'ROCK': '[grey39]█[/grey39]',
     'PLAYER': '@',
-    'PLAYER_END': '[light blue]☐[/light blue]',
+    'PLAYER_END': '[light blue]◻[/light blue]',
     'SPIKE_UP': 'M',
     'SPIKE_DOWN': 'W'
 }

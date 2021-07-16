@@ -16,3 +16,5 @@ def load_levels() -> list:
         return otherlevels
     except EOFError:
         return levels
+    except FileNotFoundError:
+        return levels
