@@ -12,8 +12,8 @@ term: blessed.Terminal = blessed.Terminal()
 # full height, and bounce the screen around
 term_height: int = term.height - 2
 term_width: int = term.width
-hits: int = 3
-previoushits: int = 3
+hits: int = 7
+previoushits: int = 7
 
 paused: bool = False
 game_over: bool = False

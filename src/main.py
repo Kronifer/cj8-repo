@@ -14,6 +14,7 @@ import blessed as b
 import display
 import env
 import player
+import util
 
 # constants
 FRAMES_PER_SECOND = 60
@@ -137,9 +138,18 @@ def main() -> None:
                         env.hits -= 1
             except IndexError:
                 env.hits -= 1
-            if env.hits < env.previoushits:
-                world = deepcopy(backupworld)
-                env.previoushits = env.hits
+            if env.hits > 4:
+                if env.hits < env.previoushits:
+                    world = deepcopy(backupworld)
+                    env.previoushits = env.hits
+            if env.hits == 4:
+                util.KEY['PLAYER'] = 'X'
+            if env.hits == 3:
+                util.KEY['PLAYER'] = 'x'
+            if env.hits == 2:
+                util.KEY['PLAYER'] = '+'
+            if env.hits == 1:
+                util.KEY['PLAYER'] = '.'
             if env.hits == 0:
                 env.game_over = True
             if backupworld[worldindex][index] == "PLAYER_END":
