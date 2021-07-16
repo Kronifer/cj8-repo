@@ -14,5 +14,5 @@ def load_levels() -> list:
         with open('saves/main.save', 'rb') as f:
             otherlevels = pickle.load(f)
         return otherlevels
-    except Exception:
+    except EOFError:
         return levels
