@@ -19,6 +19,7 @@ paused: bool = False
 game_over: bool = False
 
 levels: list = level.load_levels()
+level_num: int = 1  # (Level #1)
 logo: str = """
 ██████╗  █████╗  ██████╗██╗  ██╗███████╗██████╗
 ██╔══██╗██╔══██╗██╔════╝██║ ██╔╝██╔════╝██╔══██╗

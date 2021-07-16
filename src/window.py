@@ -63,7 +63,7 @@ class TextWidget:
             txt = txt.center(self.data_width)
         return [f"[{style}]{t}[/{style}]" for t in txt]
 
-    def make_window(self) -> Window:
+    def make_window(self, origin: t.Optional[space.Point] = None) -> Window:
         """Makes widget content into a Window."""
         # -8 b/c 2 cells for root and widget borders & 2 for padding on each side
         max_width: int = env.term_width - 8
@@ -80,8 +80,11 @@ class TextWidget:
 
         # Window position
         self.or_y: int = ((env.term_height - self.data_height + 1) // 2) - 1
-        self.bot_y: int = self.or_y + self.data_height + 1
         self.or_x: int = ((env.term_width - self.data_width + 1) // 2) - 1
+        if origin:
+            self.or_y = origin.y
+            self.or_x = origin.x
+        self.bot_y: int = self.or_y + self.data_height + 1
         self.bot_x: int = self.or_x + self.data_width + 1
 
         data: t.List[t.List[str]] = [["[normal] [/normal]"] * (self.data_width + 2)

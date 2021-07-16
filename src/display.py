@@ -123,6 +123,10 @@ def display(world: list) -> None or list:
         win_stack = [logo_window, main_menu_window]
     else:  # Game displayer
         root_window = window.Window.from_origin(space.Point(0, 0), util.convert_data(world))
-        win_stack = [root_window]
+        info_widget = window.TextWidget([window.TextWidgetEntry(f"Level #{env.level_num}"),
+                                        window.TextWidgetEntry(f"Lives: {env.hits}")],
+                                        maximize=False)
+        info_window = info_widget.make_window(space.Point(0, root_window.bottom.x + 10))
+        win_stack = [root_window, info_window]
     render()
     return world if 'world' in locals() else None

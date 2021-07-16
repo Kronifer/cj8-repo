@@ -147,6 +147,7 @@ def main() -> None:
                 if int(len(levels)) == 0:
                     env.game_over = True
                     break
+                env.level_num += 1
                 world = levels[0]
                 backupworld = deepcopy(levels[0])
 
