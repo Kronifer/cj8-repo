@@ -31,6 +31,6 @@ allow users to create custom levels.
 
 # Installing
 
-To install _Packed_, clone the repository or download version 1.0.0 from the Releases tab and run `poetry install`. The dependancies are now
+To install _Packed_, clone the repository and run `poetry install`. The dependancies are now
 installed. To run the game, simply run `poetry run task start` in the project's root directory with
 a maximized or fullscreen terminal that supports color.
