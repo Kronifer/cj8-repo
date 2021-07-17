@@ -15,6 +15,7 @@ import display
 import env
 import player
 import util
+import window
 
 # constants
 FRAMES_PER_SECOND = 60
@@ -156,10 +157,13 @@ def main() -> None:
                 util.KEY['PLAYER'] = '.'
             if env.hits == 0:
                 env.game_over = True
+                env.game_over_type = "death"
+                break
             if backupworld[worldindex][index] == "PLAYER_END":
                 levels.pop(0)
                 if int(len(levels)) == 0:
                     env.game_over = True
+                    env.game_over_type = "won"
                     break
                 env.level_num += 1
                 world = levels[0]
@@ -170,6 +174,21 @@ def main() -> None:
             end_time = time.time()
             if (time_passed := end_time - start_time) < SECONDS_PER_FRAME - 0.0001:
                 time.sleep(SECONDS_PER_FRAME - time_passed)
+
+        if env.game_over_type == "death":
+            death_msg = [window.TextWidgetEntry(line) for line in env.death.split("\n")]
+            death_widget = window.TextWidget(death_msg, center_entries=True)
+            death_window = death_widget.make_window()
+            death_window.border = False
+            display.win_stack = [death_window]
+        elif env.game_over_type == "won":
+            win_msg = [window.TextWidgetEntry(line) for line in env.win.split("\n")]
+            win_widget = window.TextWidget(win_msg, center_entries=True)
+            win_window = win_widget.make_window()
+            win_window.border = False
+            display.win_stack = [win_window]
+        display.render()
+        time.sleep(3)
 
 
 # Run contents if file is the driver file
