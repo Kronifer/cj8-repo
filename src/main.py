@@ -166,6 +166,7 @@ def main() -> None:
                     env.game_over_type = "won"
                     break
                 env.level_num += 1
+                env.hits = env.previoushits = 7
                 world = levels[0]
                 backupworld = deepcopy(levels[0])
 
