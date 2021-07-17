@@ -103,17 +103,21 @@ def main() -> None:
                         break
                     except ValueError:
                         pass
-                if world[worldindex + 1][index] in SOLIDS:
-                    is_jumping = False
-                else:
-                    is_jumping = False
-                    you.move_down()
+                try:
+                    if world[worldindex + 1][index] in SOLIDS:
+                        is_jumping = False
+                    else:
+                        is_jumping = False
+                        you.move_down()
+                except IndexError:
+                    if not env.hits <= 4:
+                        raise IndexError
 
             if env.paused:  # the "simulation" should not tick
                 display.process_input(inp_s)
             # Player acts and world updates
             else:
-                if inp_s in key_to_action:
+                if inp_s in key_to_action and env.hits > 4:
                     key_to_action[str(inp_s)]()
                 if not env.paused:
                     update_world()
