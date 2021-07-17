@@ -11,10 +11,10 @@ KEY = {
     'GRASS': '[green]█[/green]',
     'LAVA': '[red]█[/red]',
     'ROCK': '[grey39]█[/grey39]',
-    'PLAYER': '@',
+    'PLAYER': '☺',
     'PLAYER_END': '[light blue]◻[/light blue]',
-    'SPIKE_UP': 'M',
-    'SPIKE_DOWN': 'W'
+    'SPIKE_UP': '[grey39]▲[/grey39]',
+    'SPIKE_DOWN': '[grey39]▼[/grey39]'
 }
 
 
