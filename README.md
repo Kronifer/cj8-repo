@@ -12,6 +12,19 @@
 We created a game called _Packed_, where each level takes place in a box. You enter another dimension
 each time you reach the end of a level.
 
+# Installing
+
+To install _Packed_, clone the repository or download version 1.0.0 from the Releases tab and run `poetry install`. The dependancies are now
+installed. To run the game, simply run `poetry run task start` in the project's root directory with
+a maximized or fullscreen terminal that supports color.
+
+## How To Play
+When you start the game, you will be brought to a menu screen with 4 options (unfortunately, the second option does not work due to time constraints). You can use the highlighter to navigate and choose an option.
+
+Each level is pretty simple and displays many mechanics we've developed in the game. There are two solid blocks (rock and grass), two kill blocks (spikes and lava) and the other components (player, end, and water). Water does not have any affect on gameplay yet. It is used for decoration and pits.
+
+Fortunately (and unfortunately), the physics is a bit buggy. One of the most profound ~~bugs~~ features we made was to dash in the middle of the air. This takes some practice to master, but if you spam in a direction, you will be able to stay on one level for quite a while. We leave it up to you to find the rest.
+
 # Contributing
 
 We use Poetry to manage our dependancies, among other things. To install it, run `pip install poetry`.
@@ -24,13 +37,8 @@ This will install our dependancies, and a tool called pre-commit. It will block 
 lint fails. It is required that you install it. If you want to check your lint at any time, simply run `poetry run task lint` and poetry will lint for you.
 If your lint fails in any pull request or commit, that pull request will not be merged, and if the commit is to main, it will be reverted, so be careful.
 
-## Level Creator
+# Notes
 
-The Level Creator file in the tools folder is part of the full game, but NOT the TUI. It is used to
-allow users to create custom levels.
-
-# Installing
-
-To install _Packed_, clone the repository and run `poetry install`. The dependancies are now
-installed. To run the game, simply run `poetry run task start` in the project's root directory with
-a maximized or fullscreen terminal that supports color.
+ - The Level Creator file in the tools folder was used for development purposes only. It was used to help us visualize the levels we wanted to make. It should not be considered a part of the TUI game.
+ - There are still multiple bugs that we were unable to fix before the deadline.
+ - For the full experience, please play in a full-sized terminal with support for colors.
