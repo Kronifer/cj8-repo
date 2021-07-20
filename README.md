@@ -39,6 +39,9 @@ If your lint fails in any pull request or commit, that pull request will not be 
 
 # Notes
 
- - The Level Creator file in the tools folder was used for development purposes only. It was used to help us visualize the levels we wanted to make. It should not be considered a part of the TUI game.
- - There are still multiple bugs that we were unable to fix before the deadline.
+ - The Level Creator file in the tools folder was used for development purposes only. It was used to help us visualize the levels we wanted to make. It should not be considered a part of the TUI game. However, it is included in the repo for modders.
+ - There are still multiple bugs that we were unable to fix before the deadline. They are listed below:
+   + Saving just before taking damage and reloading the game can give you the game over screen on the main menu, forcing you to empty your save files contents.
+   + If you do the above thing but instead load your save in-game, your game will also crash.
+   + Not particularly a bug, but our hit detection is quite finnicky and may make the game a challenge to beat.
  - For the full experience, please play in a full-sized terminal with support for colors.
